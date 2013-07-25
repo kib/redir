@@ -1,5 +1,11 @@
 <?php
-$addon=$_GET['addon'];
+$addon="";
+if (isset($_GET['addon']) && !empty($_GET['addon'])){
+    $con= db_connect();
+    $addon = $con->real_escape_string($_GET['addon']);
+    $con->close();
+}
+
 //$addon="skin.neon";
 if ($addon==""){
     echo "error"; 
