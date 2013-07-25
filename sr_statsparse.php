@@ -3,7 +3,7 @@ include("functions.php");
 
 $addon="";
 if (isset($_GET['addonId']) && !empty($_GET['addonId'])){
-    $con= db_connect($server,$user,$password,$database);
+    $con= db_connect();
     $addon = $con->real_escape_string($_GET['addonId']);
     $con->close();
 }

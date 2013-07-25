@@ -1,20 +1,26 @@
 <?php
 include("connect.php");
 // reusable functions
-function db_connect($host,$user,$pass,$db) {
-   $mysqli = new mysqli($host, $user, $pass, $db);
+function db_connect() {
+   global $server;
+   global $user;
+   global $password;
+   global $database;
+   $mysqli = new mysqli($server, $user, $password, $database);
    if($mysqli->connect_error) 
      die('Connect Error (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
    return $mysqli;
 }
 function time_query($startTime,$endTime){
     global $addon;
-    global $server;
-    global $user;
-    global $password;
-    global $database;
-    $con=db_connect($server,$user,$password,$database);
-    $res = $con->query("SELECT SUM(stats) FROM download WHERE addonid='".$addon."' AND dldate BETWEEN '".$startTime."' and '".$endTime."'") or die(mysql_error());
+    $con = db_connect();
+    if ($addon=="") {
+	$sql = "SELECT SUM(stats) FROM download WHERE dldate BETWEEN '".$startTime."' and '".$endTime."'";
+	}
+    else {
+	$sql = "SELECT SUM(stats) FROM download WHERE addonid='".$addon."' AND dldate BETWEEN '".$startTime."' and '".$endTime."'";
+    }
+    $res = $con->query($sql) or die(mysql_error());
     $row = $res->fetch_row(); 
     $sum = (int) $row[0]; 
     $res->close();
