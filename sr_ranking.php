@@ -4,7 +4,16 @@ $today = strtotime(date("Y-m-d"));
 include("functions.php");
 $con = db_connect();
 
-echo "<p>These are the top 100 XBMC addons downloaded using SuperRepo. To browse the addons use the search function or the categories above. For the full list of what SuperRepo offers (incl. versionnumbers) have a look at the <a href='http://addons.superrepo.org/Frodo/output_index.html'>index</a>.</p>
+if (isset($_GET['norepos']) && !empty($_GET['norepos'])){
+    $norepos = $con->real_escape_string($_GET['norepos']);
+}
+
+$res=$con->query("SELECT MIN(dldate) FROM download");
+$row=$res->fetch_row();
+$downloadssince=gmdate("Y-m-d", $row[0]);
+$res->close();
+
+echo "<p>These are the top 100 XBMC addons downloaded using SuperRepo since ".$downloadssince.". To browse the addons use the search function or the categories above. For the full list of what SuperRepo offers (incl. versionnumbers) have a look at the <a href='http://addons.superrepo.org/Frodo/output_index.html'>index</a>.</p>
 <table border='1' align='center' style='width:100%'>
 <tr> <th> Ranking </th> <th> Addon </th> <th style='text-align:center'> Downl. </th></tr>";
 
@@ -16,8 +25,11 @@ if($res = $con->query($sql)){
    	$row=$res->fetch_row();
     	$downloads = number_format($row[1], 0, ',', '.');
 	$addon = (strlen($row[0]) > 43) ? substr($row[0],0,40).'...' : $row[0];
-	if (strpos($row[0], 'script.module.') === 0) {
-        //do nothing
+	if ((strpos($row[0], 'script.module.') === 0)) {
+        // do nothing
+	}
+	else if ($norepos==1 && (strpos($row[0],'repository.superrepo.')===0)) {
+ 	// do nothing	
 	}
 	else{
     	echo "<tr><td>".($counter+1)."</td><td><a href='http://superrepo.org/addon/".$row[0]."/'>".$addon."</a></td> <td style='text-align:center'> ".$downloads." </td></tr>";
