@@ -27,13 +27,7 @@ if($res = $con->query($sql)){
     $res->close();
 }
 
-$sql="SELECT COUNT(DISTINCT iphash) FROM user";
-if($res=$con->query($sql)){
-    $row = $res->fetch_row();
-    $users = number_format($row[0], 0, ',', '.');
-    echo "<a name='stats'></a></table>";
-    $res->close();
-}
+echo "</table>";
 
 $con->close();
 ?>
