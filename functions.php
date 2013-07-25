@@ -28,7 +28,7 @@ function time_query($startTime,$endTime){
     return $sum;
 }
 function get_last_24(){
-$startTime = time() - 24*3600;     
+$startTime = time() - 86400;     
 $endTime = time();  
 return time_query($startTime,$endTime);
 }
@@ -38,17 +38,17 @@ $endTime = mktime(23, 59, 59, date('m'), date('d')-1, date('Y'));
 return time_query($startTime,$endTime);
 }
 function get_this_week(){
-$startTime = time() - 7*24*3600;   
+$startTime = time() - 604800;   
 $endTime = time();   
 return time_query($startTime,$endTime);
 }
 function get_last_week(){
-$startTime = mktime(0, 0, 0, date('n'), date('j')-6, date('Y')) - ((date('N'))*3600*24);     
-$endTime = mktime(23, 59, 59, date('n'), date('j'), date('Y')) - ((date('N'))*3600*24);   
+$startTime = mktime(0, 0, 0, date('n'), date('j')-6, date('Y')) - ((date('N'))*86400);     
+$endTime = mktime(23, 59, 59, date('n'), date('j'), date('Y')) - ((date('N'))*86400);   
 return time_query($startTime,$endTime);
 }
 function get_last_month(){
-$startTime = time() - 30*3600*24;     
+$startTime = time() - 2592000;     
 $endTime = time();
 return time_query($startTime,$endTime);
 }
