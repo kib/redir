@@ -18,7 +18,7 @@ if ($res = $con->query("SELECT * FROM addonstats WHERE `date` = '".$today."'")) 
 $con->close();
 
 $time_taken = microtime(true) - $time_start;
-$resstring = date("Y-m-d h:m")." - saving stats took ". $time_taken . " \n";
+$resstring = date("Y-m-d H:i")." - saving stats took ". $time_taken . " \n";
 file_put_contents(dirname(__FILE__)."/cronstatslog.txt", $resstring, FILE_APPEND | LOCK_EX);
 
 ?>
