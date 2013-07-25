@@ -204,5 +204,6 @@ if ($xml = @simplexml_load_file($addonmetadata.'.xml')){
 }
  
 echo '<div style="clear:both"></div>';
+$con->close();
 ?>
 
