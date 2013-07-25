@@ -165,8 +165,9 @@ else{
     header('Location: '.$dl);
 
     //download counters 
-    $result = mysql_query("INSERT INTO addonstats (addonname, counter) VALUES ('".$addonid."',1) ON DUPLICATE KEY UPDATE counter=counter+1");
+    $result = mysql_query("INSERT INTO addonstats (addonname, date, counter) VALUES ('".$addonid."',".$today.",1) ON DUPLICATE KEY UPDATE counter=counter+1");
     $result2 = mysql_query("INSERT IGNORE INTO userstats (userip, firstseen) VALUES ('".$ip."','".$time_start."')");
+    echo time();
     exit (0);
 }
 

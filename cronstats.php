@@ -6,19 +6,12 @@ $today = strtotime(date("Y-m-d"));
 include("functions.php");	
 $con = db_connect();
 
-if ($res = $con->query("SELECT * FROM addonstats")) {
+if ($res = $con->query("SELECT * FROM addonstats WHERE `date` = '".$today."'")) {
     while ($row = $res->fetch_row()) {
     	$addonid = $row[0];
-    	$addonstats = $row[1];
-	$qry1 = "SELECT * FROM download WHERE addonid='".$addonid."' AND dldate='".$today."'";
-    	$res2 = $con->query($qry1);
-	if ($res2->num_rows > 0) {
-            $qry2 = "UPDATE download SET stats='".$addonstats."' WHERE addonid = '".$addonid."' AND dldate='".$today."'";
-	    } else {
-            $qry2 = "INSERT INTO download (addonid, dldate, stats) VALUES ('".$addonid. "','".$today."','".$addonstats."' )";
-    	}
-	$res3 = $con->query($qry2);
-	$res2->close();
+    	$addonstats = $row[2];
+	$sql="INSERT INTO download (addonid, dldate, stats) VALUES ('".$addonid."',".$today.",'".$addonstats."') ON DUPLICATE KEY UPDATE stats = '".$addonstats."'";
+	$res2=$con->query($sql);
     }
     $res->close();
 }    
