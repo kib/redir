@@ -3,8 +3,8 @@
 $time_start = microtime(true);
 $today = strtotime(date("Y-m-d"));
 
-include("connect.php");	
-$con=new mysqli($server,$user,$password,$database);
+include("functions.php");	
+$con = db_connect();
 
 if ($res = $con->query("SELECT * FROM addonstats")) {
     while ($row = $res->fetch_row()) {
@@ -18,13 +18,14 @@ if ($res = $con->query("SELECT * FROM addonstats")) {
             $qry2 = "INSERT INTO download (addonid, dldate, stats) VALUES ('".$addonid. "','".$today."','".$addonstats."' )";
     	}
 	$res3 = $con->query($qry2);
-	//print($qry2."\n");
+	$res2->close();
     }
+    $res->close();
 }    
 $con->close();
 
 $time_taken = microtime(true) - $time_start;
 $resstring = date("Y-m-d h:m")." - saving stats took ". $time_taken . " \n";
-file_put_contents("/sites/addons.superrepo.org/cronstatslog.txt", $resstring, FILE_APPEND | LOCK_EX);
+file_put_contents(dirname(__FILE__)."/cronstatslog.txt", $resstring, FILE_APPEND | LOCK_EX);
 
 ?>
