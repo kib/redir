@@ -4,7 +4,7 @@ include("functions.php");
 $today = strtotime(date("Y-m-d")); 
 $amount = file_get_contents('http://www.mirrorservice.org/sites/addons.superrepo.org/Frodo/.metadata/amount');
 
-$con  = db_connect();
+$con = db_connect();
 $res = $con->query("SELECT COUNT(*) FROM userstats");
 $row=$res->fetch_row();
 $users=$row[0];
